@@ -86,13 +86,20 @@ async function run() {
             return res.send(result);
 
         })
+
+
         //addNewItem
+
+
         app.post('/part', async (req, res) => {
             const item = req.body;
             const result = await partsCollection.insertOne(item);
             res.send(result)
         })
+
+
         // createUser
+
         app.put('/user/:email', async (req, res) => {
             const email = req.params.email;
             const user = req.body;
@@ -105,7 +112,12 @@ async function run() {
             const token = jwt.sign({ email: email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '6h' })
             res.send({ result, token });
         })
+
+
+
         //updateProfile
+
+
         app.put('/profile/:email', async (req, res) => {
             const email = req.params.email;
             const updatedInfo = req.body;
@@ -124,36 +136,29 @@ async function run() {
 
         })
 
+
+
         //getMyProfile
+
+
         app.get('/profile/:email', async (req, res) => {
             const email = req.params.email;
             const query = { email: email };
             const user = await profileCollection.findOne(query);
             res.send(user);
         })
+
+
+
         //getUserForAdmin
+
+        
         app.get('/user', async (req, res) => {
             const users = await usersCollection.find().toArray();
             res.send(users)
         })
 
-        // createAdmin
-        /* app.put('/user/admin/:email', async (req, res) => {
-            const email = req.params.email;
-          
-            
-            
-              const filter = { email: email };
-              const updateDoc = {
-                $set: { role: 'admin' },
-              };
-              const result = await usersCollection.updateOne(filter, updateDoc);
       
-              res.send(result);
-            
-            
-      
-          } )*/
         app.put('/user/admin/:email', JWTverify, async (req, res) => {
             const email = req.params.email;
             const requester = req.decoded.email;
@@ -172,6 +177,8 @@ async function run() {
             }
 
         })
+
+
         //useAdmin
         app.get('/admin/:email', async (req, res) => {
             const email = req.params.email;
